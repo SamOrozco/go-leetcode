@@ -2,7 +2,7 @@ Validate if a given string can be interpreted as a decimal number.
 
 Some examples:
 ```
-"0" => true
+"0" => true 
 " 0.1 " => true
 "abc" => false
 "1 a" => false
