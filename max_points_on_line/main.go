@@ -47,114 +47,44 @@ func main() {
 	println("pass")
 }
 
-type Direction func(int, int) (int, int)
-type Matrix map[int]map[int]int
-
-var maxX = 0
-var maxY = 0
-
 func maxPoints(points []Point) int {
-	if len(points) < 1 {
+	pointLen := len(points)
+	if pointLen == 0 {
+		return pointLen
+	}
+	slopes := make(map[int]int, len(points))
+	slopeMax := 0
+	sameCount := 0
+	for i, p0 := range points {
+		for _, p1 := range points[i+1:] {
+			curSlop := slope(p0, p1)
+			if same(p0, p1) {
+				sameCount++
+			}
+			if val, ok := slopes[curSlop]; ok { // if slop exists
+				newVal := val + 1
+				slopes[curSlop] = newVal
+				if newVal > slopeMax {
+					slopeMax = newVal
+				}
+			} else {
+				slopeMax = 1
+				slopes[curSlop] = 1
+			}
+		}
+	}
+	return slopeMax + sameCount
+}
+
+func slope(p0, p1 Point) int {
+	xDiff := p0.X - p1.X
+	yDiff := p0.Y - p1.Y
+	if xDiff == 0 || yDiff == 0 {
 		return 0
 	}
-	// I want to build a flexible matrix
-	// that I can query with indexes
-	matrix := make(map[int]map[int]int, 0)
-	for _, p := range points {
-		if matrix[p.X] == nil {
-			matrix[p.X] = make(map[int]int, 0)
-		}
-		matrix[p.X][p.Y] = matrix[p.X][p.Y] + 1
-	}
-
-	max := 0
-	for _, p := range points {
-		tempMx := maxStraight(p.X, p.Y, matrix, nil, matrix[p.X][p.Y])
-		if tempMx > max {
-			max = tempMx
-		}
-	}
-	return max
+	return xDiff / yDiff
 }
 
-func maxStraight(x, y int, matrix Matrix, dir Direction, count int) int {
-	if dir == nil {
-		t := maxStraight(x, y, matrix, Top(), count)
-		tr := maxStraight(x, y, matrix, TopRight(), count)
-		r := maxStraight(x, y, matrix, Right(), count)
-		br := maxStraight(x, y, matrix, BottomRight(), count)
-		b := maxStraight(x, y, matrix, BottomLeft(), count)
-		bl := maxStraight(x, y, matrix, Left(), count)
-		l := maxStraight(x, y, matrix, TopLet(), count)
-		return max(t, tr, r, br, b, bl, l)
-	}
-	newX, newY := dir(x, y)
-	if matrix[newX][newY] > 0 { // if neighbor is a point
-		return maxStraight(newX, newY, matrix, dir, count+1)
-	} else {
-		// if both are out of range
-		if x > maxX && y > maxY {
-
-		}
-		return count
-	}
-}
-
-func max(vals ...int) int {
-	mx := -1
-	for _, val := range vals {
-		if val > mx {
-			mx = val
-		}
-	}
-	return mx
-}
-
-// DIRECTIONS
-func Top() Direction {
-	return func(x, y int) (int, int) {
-		return x, y + 1
-	}
-}
-
-func Right() Direction {
-	return func(x, y int) (int, int) {
-		return x + 1, y
-	}
-}
-
-func TopRight() Direction {
-	return func(x, y int) (int, int) {
-		return Right()(Top()(x, y))
-	}
-}
-
-func Bottom() Direction {
-	return func(x, y int) (int, int) {
-		return x, y - 1
-	}
-}
-
-func BottomRight() Direction {
-	return func(x, y int) (int, int) {
-		return Right()(Bottom()(x, y))
-	}
-}
-
-func Left() Direction {
-	return func(x, y int) (int, int) {
-		return x - 1, y
-	}
-}
-
-func BottomLeft() Direction {
-	return func(x, y int) (int, int) {
-		return Left()(Bottom()(x, y))
-	}
-}
-
-func TopLet() Direction {
-	return func(x, y int) (int, int) {
-		return Left()(Top()(x, y))
-	}
+func same(p0, p1 Point) bool {
+	return p0.X == p1.X && p0.Y == p1.Y
 }
