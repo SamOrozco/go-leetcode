@@ -99,7 +99,7 @@ func myAtoi(str string) int {
 			return 0
 		}
 		if isPrefix {
-			if i != 0 && i != len(clean) - 1 {
+			if i != 0 && i != len(clean)-1 {
 				return 0
 			}
 			lastWasPrefix = true
