@@ -1,31 +1,11 @@
-import java.util.HashSet;
-import java.util.Set;
-
-public class Main {
+public class Solution {
 
     public static void main(String[] args) {
         if (!"blue is sky the".equals(reverseWords("the sky is blue"))) {
             System.out.println("Fail");
             System.exit(1);
         }
-        System.out.println("pass");
     }
-
-//    public static String reverseWords(String s) {
-//        // trim string and split on all white space
-//        String[] tokens = s.trim().split("\\s+");
-//        int length = tokens.length;
-//        StringBuilder bldr = new StringBuilder();
-//        for (int i = length - 1; i >= 0; i--) {
-//            if (i != 0) {
-//                bldr.append(tokens[i]).append(" ");
-//            } else {
-//                bldr.append(tokens[i]);
-//            }
-//        }
-//
-//        return bldr.toString();
-//    }
 
     public static String reverseWords(String s) {
         // trim string and split on all white space
@@ -41,10 +21,5 @@ public class Main {
         }
 
         return bldr.toString();
-    }
-
-
-    public static Set<String> validChars() {
-        return new HashSet<>()
     }
 }
