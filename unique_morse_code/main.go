@@ -3,14 +3,14 @@ package main
 import "strings"
 
 func main() {
-	if uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}) != 2 {
-		println("failed")
-	}
+        if uniqueMorseRepresentations([]string{"gin", "zen", "gig", "msg"}) != 2 {
+                println("failed")
+        }
 }
 
 var morseCodeMap = map[rune]string{
         'a': ".-",
-		'b': "-...",	
+        'b': "-...",
         'c': "-.-.",
         'd': "-..",
         'e': ".",
@@ -39,20 +39,20 @@ var morseCodeMap = map[rune]string{
 
 func uniqueMorseRepresentations(words []string) int {
         if len(words) == 0 {
-			return 0
-		}
+                return 0
+        }
 
-		uniqueResponses := make(map[string]bool)
-		// iterate each word in our words slice
-		for _, word := range words {
-			// iterate each char for each word and build morse code string
-			bldr := strings.Builder{}
-			for _, char := range word  {
-				if val, ok := morseCodeMap[char]; ok {
-					bldr.WriteString(val)
-				}
-			}
-			uniqueResponses[bldr.String()] = true
-		}
-		return len(uniqueResponses)
+        uniqueResponses := make(map[string]bool)
+        // iterate each word in our words slice
+        for _, word := range words {
+                // iterate each char for each word and build morse code string
+                bldr := strings.Builder{}
+                for _, char := range word {
+                        if val, ok := morseCodeMap[char]; ok {
+                                bldr.WriteString(val)
+                        }
+                }
+                uniqueResponses[bldr.String()] = true
+        }
+        return len(uniqueResponses)
 }
