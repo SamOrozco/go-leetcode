@@ -11,5 +11,5 @@ func main() {
 
 
 func removeOuterParentheses(S string) string {
-    return ""
+    
 }
